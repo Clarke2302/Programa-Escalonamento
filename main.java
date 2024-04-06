@@ -129,6 +129,8 @@ public class main{
         System.out.println("--------------------------------");
         
     }
+
+    //------------------FCFS--------------------
     
     public static void FCFS(int[] execucao, int[] espera, int[] restante, int[] chegada){
         int[] tempo_execucao = execucao.clone();
@@ -161,52 +163,66 @@ public class main{
 
         imprime_stats(tempo_espera);
     }
+
+    //------------------SFJ--------------------
+
+    public static void SJF(boolean preemptivo, int[] execucao, int[] espera, int[] restante, int[] chegada) {
+        int[] tempo_execucao = execucao.clone();
+        int[] tempo_espera = espera.clone();
+        int[] tempo_restante = restante.clone();
+        int[] tempo_chegada = chegada.clone();
     
-        public static void SJF(boolean preemptivo, int[] execucao, int[] espera, int[] restante, int[] chegada) {
-            int[] tempo_execucao = execucao.clone();
-            int[] tempo_espera = espera.clone();
-            int[] tempo_restante = restante.clone();
-            int[] tempo_chegada = chegada.clone();
-        
-            int tempo_atual = 1; // Processo inicial no SFJ é 1
-            int processos_completos = 0;
-        
-            while (processos_completos < n_processos) {
-                int menor_tempo_execucao = Integer.MAX_VALUE;
-                int processo_menor_tempo = -1;
-        
+        int tempo_atual = 1; 
+        int processosCompletos = 0;
+
+        System.out.println("--------------------------------");
+    
+        while (processosCompletos < n_processos) {
+            int menor_tempo_execucao = Integer.MAX_VALUE;
+            int processo_menor_tempo = -1;
+    
+            for (int i = 0; i < n_processos; i++) {
+                if (tempo_chegada[i] <= tempo_atual && tempo_restante[i] < menor_tempo_execucao && tempo_restante[i] > 0) {
+                    menor_tempo_execucao = tempo_restante[i];
+                    processo_menor_tempo = i;
+                }
+            }
+    
+            if (processo_menor_tempo == -1) {
+                System.out.println("\n"+"tempo[" + tempo_atual + "]: nenhum processo está pronto");
+                tempo_atual++;
+                continue;
+            }
+    
+            if (preemptivo) {
+                // Verifica se há um processo com tempo restante menor que o processo atual em execução
                 for (int i = 0; i < n_processos; i++) {
-                    if (tempo_chegada[i] <= tempo_atual && tempo_restante[i] < menor_tempo_execucao && tempo_restante[i] > 0) {
-                        menor_tempo_execucao = tempo_restante[i];
+                    if (i != processo_menor_tempo && tempo_chegada[i] <= tempo_atual && tempo_restante[i] < tempo_restante[processo_menor_tempo] && tempo_restante[i] > 0) {
+                        System.out.println("\n"+"tempo[" + tempo_atual + "]: processo[" + processo_menor_tempo + "] interrompido");
                         processo_menor_tempo = i;
                     }
                 }
-        
-                if (processo_menor_tempo == -1) {
-                    System.out.println("\n"+"tempo[" + tempo_atual + "]: nenhum processo está pronto");
-                    tempo_atual++;
-                    continue;
-                }
-        
-                // Execução do processo
-                tempo_restante[processo_menor_tempo]--;
-                System.out.println("\n"+"tempo[" + tempo_atual + "]: processo[" + processo_menor_tempo + "] restante=" + tempo_restante[processo_menor_tempo]);
-        
-                if (tempo_restante[processo_menor_tempo] == 0) {
-                    processos_completos++;
-        
-                    // Calcula o tempo de espera para o processo concluído
-                    int tempo_espera_processo = tempo_atual - tempo_execucao[processo_menor_tempo] + 1 - tempo_chegada[processo_menor_tempo];
-                    tempo_espera[processo_menor_tempo] = tempo_espera_processo >= 0 ? tempo_espera_processo : 0;
-                }
-        
-                tempo_atual++;
             }
-        
-            imprime_stats(tempo_espera);
-    }
     
-    //------------------------------
+            // Execução do processo
+            tempo_restante[processo_menor_tempo]--;
+            System.out.println("\n"+"tempo[" + tempo_atual + "]: processo[" + processo_menor_tempo + "] restante=" + tempo_restante[processo_menor_tempo]);
+    
+            if (tempo_restante[processo_menor_tempo] == 0) {
+                processosCompletos++;
+    
+                // Calcula o tempo de espera para o processo concluído
+                int tempo_espera_processo = tempo_atual - tempo_execucao[processo_menor_tempo] + 1 - tempo_chegada[processo_menor_tempo];
+                tempo_espera[processo_menor_tempo] = tempo_espera_processo >= 0 ? tempo_espera_processo : 0;
+            }
+    
+            tempo_atual++;
+        }
+        System.out.println("--------------------------------");
+        imprime_stats(tempo_espera);
+    }
+
+    //------------------PRIORIDADE--------------------
 
     public static void PRIORIDADE(boolean preemptivo, int[] execucao, int[] espera, int[] restante, int[] chegada, int[] prioridade){
     	int[] tempo_execucao = execucao.clone();
@@ -215,9 +231,18 @@ public class main{
         int[] tempo_chegada = chegada.clone();
         int[] prioridade_temp = prioridade.clone();
 
-        //implementar código do Prioridade preemptivo e não preemptivo
-        //...
-        //
+        int processosCompletos=0;
+        int tempoAtual=1;
+
+        while (processosCompletos < n_processos) {
+
+            for (int i = 0; i < n_processos; i++) {
+
+                if(prioridade_temp[i]>tempoAtual){
+
+                }
+            }
+        }
 
         imprime_stats(tempo_espera);
 
