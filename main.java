@@ -252,6 +252,16 @@ public class main{
                 tempoAtual++;
                 continue;
             }
+            // Se o escalonamento é preemptivo, verifica se há um processo com prioridade mais alta
+            if (preemptivo) {
+                // Verifica se há um processo com prioridade mais alta do que o processo atual em execução
+                for (int i = 0; i < n_processos; i++) {
+                    if (i != processo_maior_prioridade && tempo_chegada[i] <= tempoAtual && prioridade_temp[i] < prioridade_temp[processo_maior_prioridade] && tempo_restante[i] > 0) {
+                        System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_maior_prioridade + "] interrompido");
+                        processo_maior_prioridade = i;
+                    }
+                }
+            }
         }
 
         imprime_stats(tempo_espera);
