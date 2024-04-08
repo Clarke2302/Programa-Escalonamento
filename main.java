@@ -139,24 +139,24 @@ public class main {
         int[] tempo_restante = restante.clone();
         //int[] tempo_chegada = chegada.clone();
 
-        int processo_em_execucao = 0; //processo inicial no FIFO é o zero
+        int processoExecucao = 0; //processo inicial no FIFO é o zero
 
         System.out.println("--------------------------------");
 
         //implementar código do FCFS
         for (int i = 1; i < MAXIMO_TEMPO_EXECUCAO; i++) {
-            System.out.println("tempo[" + i + "]: processo[" + processo_em_execucao + "] restante = " + tempo_restante[processo_em_execucao]);
+            System.out.println("tempo[" + i + "]: processo[" + processoExecucao + "] restante = " + tempo_restante[processoExecucao]);
 
-            if (tempo_execucao[processo_em_execucao] == tempo_restante[processo_em_execucao])
-                tempo_espera[processo_em_execucao] = i - 1;
+            if (tempo_execucao[processoExecucao] == tempo_restante[processoExecucao])
+                tempo_espera[processoExecucao] = i - 1;
 
-            if (tempo_restante[processo_em_execucao] == 1) {
-                if (processo_em_execucao == (numProcessos - 1))
+            if (tempo_restante[processoExecucao] == 1) {
+                if (processoExecucao == (numProcessos - 1))
                     break;
                 else
-                    processo_em_execucao++;
+                    processoExecucao++;
             } else
-                tempo_restante[processo_em_execucao]--;
+                tempo_restante[processoExecucao]--;
 
         }
         System.out.println("--------------------------------");
@@ -172,29 +172,50 @@ public class main {
         int[] tempo_restante = restante.clone();
         int[] tempo_chegada = chegada.clone();
 
-        int tempoAtual = 1;  // Tempo atual de execução
-        int processosCompletos = 0; // Contador de processos concluídos
+        int menorTempo = MAXIMO_TEMPO_EXECUCAO;
+        int processoExecucao = -1; // Processos em execução
+        int processosConcluidos = 0;
+        int tempo = 0;
 
         System.out.println("--------------------------------");
 
-        while (processosCompletos < numProcessos) { //até terminar o número de processos restantes
-            int menor_tempo_execucao = Integer.MAX_VALUE;
-            int processo_menor_tempo = -1;
+        while(true){
+            tempo++;
+            //PREEMPTIVO
+            if(preemptivo || processoExecucao == -1){ //se for preemptivo ou os processos estiverem iguais ao início
+                for(int i=0; i <numProcessos; i++){ // loop até acabar o número de processos
 
-            for (int i = 0; i < numProcessos; i++) {
-                if ((tempo_chegada[i] <= tempoAtual) && (processosCompletos == 0) && (bt[i] < min)) {
+                    if((tempo_restante[i] != 0) && (tempo_chegada[i] <= tempo)){ //Se o tempo restante atual for diferente de 0 e o tempo de chegada for menor ou igual ao tempo
+                        if(tempo_restante[i] < menorTempo){ // se o tempo restante atual for menor que o menor tempo
+                            menorTempo = tempo_restante[i]; //então o menor tempo é o tempo restante atual
+                            processoExecucao = i; // e o processo que está em execução é o atual
+                        }
+                    } 
+                }
+            }
+            if(processoExecucao == -1){ //se processos em execução estiver igual, nenhum processo ficou pronto
+                System.out.println("tempo["+tempo+"]: nenhum processo está pronto");
+            
+            }else{ // NÃO PREEMPTIVO
+                
+                if(tempo_execucao[processoExecucao] == tempo_restante[processoExecucao])
+                tempo_espera[processoExecucao] = tempo - tempo_chegada[processoExecucao];
 
-                    if (preemptivo) { //executar até o final de cada processo
-                        int menor_tempo_restante = Integer.MAX_VALUE;
-                        int processo_interrompido = -1;
+                tempo_restante[processoExecucao]--;
+                System.out.println("tempo[" + tempo + "]: processo[" + processoExecucao + "] restante = " + tempo_restante[processoExecucao]);
 
+                if(tempo_restante[processoExecucao] == 0){
+                    processoExecucao = -1;
+                    menorTempo = MAXIMO_TEMPO_EXECUCAO;
+                    processosConcluidos++;
 
-                        System.out.println("--------------------------------");
-                        imprime_stats(tempo_espera);
-                    }
+                    if(processosConcluidos == numProcessos)
+                    break;
                 }
             }
         }
+        System.out.println("--------------------------------");
+        imprime_stats(tempo_espera);
     }
 
     //------------------PRIORIDADE--------------------
