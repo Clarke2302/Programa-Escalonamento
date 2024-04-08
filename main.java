@@ -55,7 +55,7 @@ public class main{
                     PRIORIDADE(false, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
                 }
                 if(escolha==6){
-                    //Round_Robin(tempo_execucao, tempo_espera, tempo_restante);
+                    Round_Robin(tempo_execucao, tempo_espera, tempo_restante);
                 }
                 if(escolha==7){
                     imprime_processos(tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
@@ -297,10 +297,49 @@ public class main{
         int quantum = 2; // Pode ser ajustado conforme necessário
 
         // Inicialização de variáveis de controle
+
         int tempo_atual = 0; // Tempo atual de execução
         int processosCompletos = 0; // Contador de processos concluídos
-        
-        
+
+        while (processosCompletos < numProcessos) {
+            // Itera sobre todos os processos
+            for (int i = 0; i < numProcessos; i++) {
+                // Verifica se o processo está pronto para execução e possui tempo restante
+                if (tempo_restante[i] > 0) {
+                    // Executa o processo pelo quantum ou pelo tempo restante, o que for menor
+                    int tempo_executado = Math.min(quantum, tempo_restante[i]);
+                    tempo_restante[i] -= tempo_executado; // Atualiza o tempo restante do processo
+
+                    // Atualiza o tempo atual de execução
+                    tempo_atual += tempo_executado;
+                // Atualiza o tempo de espera dos processos que não estão em execução
+                for (int j = 0; j < numProcessos; j++) {
+                    
+                    if (j != i && tempo_restante[j] > 0) {
+                            tempo_espera[j] += tempo_executado;
+                    }
+                }
+
+                // Verifica se o processo foi concluído
+                if (tempo_restante[i] == 0) {
+                    processosCompletos++;
+                    // Calcula o tempo de espera para o processo concluído
+                    tempo_espera[i] = tempo_atual - tempo_execucao[i];
+                }
+
+                // Imprime o status do processo
+                System.out.println("\n"+"tempo[" + tempo_atual + "]: processo[" + i + "] restante = " + tempo_restante[i]);
+
+                    // Verifica se todos os processos foram concluídos
+                    if (processosCompletos == numProcessos) {
+                        break; // Encerra o loop se todos os processos foram concluídos
+                    }
+
+                }
+            }
+        }
+
+        // Imprime os tempos de espera calculados para cada processo
         imprime_stats(tempo_espera);
     }
 }
