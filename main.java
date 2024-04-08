@@ -49,10 +49,10 @@ public class main{
                     SJF(false,tempo_execucao, tempo_espera, tempo_restante, tempo_chegada);
                 }
                 if(escolha==4){
-                    PRIORIDADE(true, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
+                    //PRIORIDADE(true, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
                 }
                 if(escolha==5){
-                    PRIORIDADE(false, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
+                    //PRIORIDADE(false, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
                 }
                 if(escolha==6){
                     Round_Robin(tempo_execucao, tempo_espera, tempo_restante);
@@ -209,7 +209,7 @@ public class main{
     
                 // Se encontrou um processo com tempo restante menor, interrompe o processo atual
                 if (processo_interrompido != -1) {
-                    System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_menor_tempo + "] interrompido");
+                    //System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_menor_tempo + "] interrompido"); //não aparecer print 
                     processo_menor_tempo = processo_interrompido;
                 }
             }
@@ -234,69 +234,15 @@ public class main{
 
     //------------------PRIORIDADE--------------------
 
-    public static void PRIORIDADE(boolean preemptivo, int[] execucao, int[] espera, int[] restante, int[] chegada, int[] prioridade){
-    	int[] tempo_execucao = execucao.clone();
+    public static void PRIORIDADE(boolean preemptivo, int[] execucao, int[] espera, int[] restante, int[] chegada, int[] prioridade) {
+        int[] tempo_execucao = execucao.clone();
         int[] tempo_espera = espera.clone();
         int[] tempo_restante = restante.clone();
         int[] tempo_chegada = chegada.clone();
         int[] prioridade_temp = prioridade.clone();
-
-        int processosCompletos=0;
-        int tempoAtual=1;
-
-        System.out.println("--------------------------------");
-
-        while (processosCompletos < numProcessos) { // Loop principal que executa até que todos os processos sejam concluídos
-            int maior_prioridade = Integer.MAX_VALUE; // Inicialização com um valor grande para encontrar a menor prioridade
-            int processo_maior_prioridade = -1; // Índice do processo com a maior prioridade
-
-            for (int i = 0; i < numProcessos; i++) { // Encontra o processo com a maior prioridade pronto para execução no momento
-
-                if (tempo_chegada[i] <= tempoAtual && prioridade_temp[i] < maior_prioridade && tempo_restante[i] > 0) {
-                maior_prioridade = prioridade_temp[i];
-                processo_maior_prioridade = i;
-                }
-            }
-            // Se nenhum processo está pronto para execução, avança o tempo e continua o loop
-            if (processo_maior_prioridade == -1) {
-                System.out.println("\n"+"tempo[" + tempoAtual + "]: nenhum processo está pronto");
-                tempoAtual++;
-                continue;
-            }
-            // Se o escalonamento é preemptivo, verifica se há um processo com prioridade mais alta
-            if (preemptivo) {
-                // Verifica se há um processo com prioridade mais alta do que o processo atual em execução
-                for (int i = 0; i < numProcessos; i++) {
-                    if (i != processo_maior_prioridade && tempo_chegada[i] <= tempoAtual && prioridade_temp[i] < prioridade_temp[processo_maior_prioridade] && tempo_restante[i] > 0) {
-                        System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_maior_prioridade + "] interrompido");
-                        processo_maior_prioridade = i;
-                    }
-                }
-            }
-            // Executa o processo com a maior prioridade encontrado
-            tempo_restante[processo_maior_prioridade]--;
-            System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_maior_prioridade + "] restante = " + tempo_restante[processo_maior_prioridade]);
-
-            // Verifica se o processo foi concluído
-            if (tempo_restante[processo_maior_prioridade] == 0) {
-                processosCompletos++;
-
-                // Calcula o tempo de espera para o processo concluído
-                int tempo_espera_processo = tempoAtual - tempo_execucao[processo_maior_prioridade] + 1 - tempo_chegada[processo_maior_prioridade];
-                tempo_espera[processo_maior_prioridade] = tempo_espera_processo >= 0 ? tempo_espera_processo : 0;
-            }
-
-            // Incrementa o tempo atual para a próxima iteração do loop
-            tempoAtual++;
-        }
-
-        System.out.println("--------------------------------");
-
-        // Imprime os tempos de espera calculados para cada processo
-        imprime_stats(tempo_espera);
-    }
-
     
+        
+ 
     public static void Round_Robin(int[] execucao, int[] espera, int[] restante){
         int[] tempo_execucao = execucao.clone();
         int[] tempo_espera = espera.clone();
