@@ -5,15 +5,15 @@ public class main{
 
     static int MAXIMO_TEMPO_EXECUCAO = 65535;
 
-    static int n_processos = 3;  
+    static int numProcessos = 3;  
 
     public static void main(String[] args) {
 
-    int[] tempo_execucao = new int[n_processos];
-    int[] tempo_chegada = new int[n_processos];
-    int[] prioridade = new int[n_processos];
-    int[] tempo_espera = new int[n_processos];
-    int[] tempo_restante = new int[n_processos];
+    int[] tempo_execucao = new int[numProcessos];
+    int[] tempo_chegada = new int[numProcessos];
+    int[] prioridade = new int[numProcessos];
+    int[] tempo_espera = new int[numProcessos];
+    int[] tempo_restante = new int[numProcessos];
     
     
     Scanner teclado = new Scanner (System.in);
@@ -84,7 +84,7 @@ public class main{
         System.out.print("Digite: ");
         aleatorio =  teclado.nextInt();
 
-        for (int i = 0; i < n_processos; i++) {
+        for (int i = 0; i < numProcessos; i++) {
             //Popular Processos Aleatorio
             if (aleatorio == 1){
                 tempo_execucao[i] = random.nextInt(10)+1;
@@ -108,7 +108,7 @@ public class main{
     public static void imprime_processos(int[] tempo_execucao, int[] tempo_espera, int[] tempo_restante, int[] tempo_chegada,  int []prioridade){
         System.out.println("--------------------------------");
         //Imprime lista de processos
-    for (int i = 0; i < n_processos; i++) {
+    for (int i = 0; i < numProcessos; i++) {
         System.out.println("Processo["+i+"]: tempo_execucao = "+ tempo_execucao[i] + " tempo_restante = "+tempo_restante[i] + " tempo_chegada = " + tempo_chegada[i] + " prioridade = " +prioridade[i]);
     }
     System.out.println("--------------------------------");
@@ -120,12 +120,12 @@ public class main{
         
         double tempo_espera_total = 0;
         
-        for(int i=0; i<n_processos; i++){ 
+        for(int i=0; i<numProcessos; i++){ 
             System.out.println("Processo["+i+"]: tempo_espera = "+tempo_espera[i]);
             tempo_espera_total = tempo_espera_total + tempo_espera[i];
         }
 
-        System.out.println("\n"+"Tempo médio de espera: "+(tempo_espera_total/n_processos));
+        System.out.println("\n"+"Tempo médio de espera: "+(tempo_espera_total/numProcessos));
         System.out.println("--------------------------------");
         
     }
@@ -151,7 +151,7 @@ public class main{
                 tempo_espera[processo_em_execucao] = i-1;
 
             if (tempo_restante[processo_em_execucao] == 1) {
-                if (processo_em_execucao == (n_processos-1))
+                if (processo_em_execucao == (numProcessos-1))
                     break;
                 else
                     processo_em_execucao++;
@@ -178,11 +178,11 @@ public class main{
 
         System.out.println("--------------------------------");
     
-        while (processosCompletos < n_processos) {
+        while (processosCompletos < numProcessos) {
             int menor_tempo_execucao = Integer.MAX_VALUE;
             int processo_menor_tempo = -1;
     
-            for (int i = 0; i < n_processos; i++) {
+            for (int i = 0; i < numProcessos; i++) {
                 if (tempo_chegada[i] <= tempoAtual && tempo_restante[i] < menor_tempo_execucao && tempo_restante[i] > 0) {
                     menor_tempo_execucao = tempo_restante[i];
                     processo_menor_tempo = i;
@@ -197,7 +197,7 @@ public class main{
     
             if (preemptivo) {
                 // Verifica se há um processo com tempo restante menor que o processo atual em execução
-                for (int i = 0; i < n_processos; i++) {
+                for (int i = 0; i < numProcessos; i++) {
                     if (i != processo_menor_tempo && tempo_chegada[i] <= tempoAtual && tempo_restante[i] < tempo_restante[processo_menor_tempo] && tempo_restante[i] > 0) {
                         System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_menor_tempo + "] interrompido");
                         processo_menor_tempo = i;
@@ -237,11 +237,11 @@ public class main{
 
         System.out.println("--------------------------------");
 
-        while (processosCompletos < n_processos) { // Loop principal que executa até que todos os processos sejam concluídos
+        while (processosCompletos < numProcessos) { // Loop principal que executa até que todos os processos sejam concluídos
             int maior_prioridade = Integer.MAX_VALUE; // Inicialização com um valor grande para encontrar a menor prioridade
             int processo_maior_prioridade = -1; // Índice do processo com a maior prioridade
 
-            for (int i = 0; i < n_processos; i++) { // Encontra o processo com a maior prioridade pronto para execução no momento
+            for (int i = 0; i < numProcessos; i++) { // Encontra o processo com a maior prioridade pronto para execução no momento
 
                 if (tempo_chegada[i] <= tempoAtual && prioridade_temp[i] < maior_prioridade && tempo_restante[i] > 0) {
                 maior_prioridade = prioridade_temp[i];
@@ -257,7 +257,7 @@ public class main{
             // Se o escalonamento é preemptivo, verifica se há um processo com prioridade mais alta
             if (preemptivo) {
                 // Verifica se há um processo com prioridade mais alta do que o processo atual em execução
-                for (int i = 0; i < n_processos; i++) {
+                for (int i = 0; i < numProcessos; i++) {
                     if (i != processo_maior_prioridade && tempo_chegada[i] <= tempoAtual && prioridade_temp[i] < prioridade_temp[processo_maior_prioridade] && tempo_restante[i] > 0) {
                         System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_maior_prioridade + "] interrompido");
                         processo_maior_prioridade = i;
