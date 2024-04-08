@@ -293,10 +293,13 @@ public class main{
         int[] tempo_espera = espera.clone();
         int[] tempo_restante = restante.clone();
 
+        // Definindo o quantum para o algoritmo Round-Robin
+        int quantum = 2; // Pode ser ajustado conforme necessário
+
+        // Inicialização de variáveis de controle
+        int tempo_atual = 0; // Tempo atual de execução
+        int processosCompletos = 0; // Contador de processos concluídos
         
-        //implementar código do Round-Robin
-        //...
-        //
         
         imprime_stats(tempo_espera);
     }
