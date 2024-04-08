@@ -49,10 +49,10 @@ public class main{
                     SJF(false,tempo_execucao, tempo_espera, tempo_restante, tempo_chegada);
                 }
                 if(escolha==4){
-                    //PRIORIDADE(true, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
+                    PRIORIDADE(true, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
                 }
                 if(escolha==5){
-                    //PRIORIDADE(false, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
+                    PRIORIDADE(false, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
                 }
                 if(escolha==6){
                     //Round_Robin(tempo_execucao, tempo_espera, tempo_restante);
@@ -145,7 +145,7 @@ public class main{
 
         //implementar código do FCFS
         for (int i=1; i<MAXIMO_TEMPO_EXECUCAO; i++) {
-            System.out.println("tempo["+i+"]: processo["+processo_em_execucao+"] restante="+tempo_restante[processo_em_execucao]);
+            System.out.println("tempo["+i+"]: processo["+processo_em_execucao+"] restante = "+tempo_restante[processo_em_execucao]);
             
             if (tempo_execucao[processo_em_execucao] == tempo_restante[processo_em_execucao])
                 tempo_espera[processo_em_execucao] = i-1;
@@ -207,7 +207,7 @@ public class main{
     
             // Execução do processo
             tempo_restante[processo_menor_tempo]--;
-            System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_menor_tempo + "] restante=" + tempo_restante[processo_menor_tempo]);
+            System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_menor_tempo + "] restante = " + tempo_restante[processo_menor_tempo]);
     
             if (tempo_restante[processo_menor_tempo] == 0) {
                 processosCompletos++;
@@ -234,6 +234,8 @@ public class main{
 
         int processosCompletos=0;
         int tempoAtual=1;
+
+        System.out.println("--------------------------------");
 
         while (processosCompletos < n_processos) { // Loop principal que executa até que todos os processos sejam concluídos
             int maior_prioridade = Integer.MAX_VALUE; // Inicialização com um valor grande para encontrar a menor prioridade
@@ -262,11 +264,29 @@ public class main{
                     }
                 }
             }
+            // Executa o processo com a maior prioridade encontrado
+            tempo_restante[processo_maior_prioridade]--;
+            System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_maior_prioridade + "] restante = " + tempo_restante[processo_maior_prioridade]);
+
+            // Verifica se o processo foi concluído
+            if (tempo_restante[processo_maior_prioridade] == 0) {
+                processosCompletos++;
+
+                // Calcula o tempo de espera para o processo concluído
+                int tempo_espera_processo = tempoAtual - tempo_execucao[processo_maior_prioridade] + 1 - tempo_chegada[processo_maior_prioridade];
+                tempo_espera[processo_maior_prioridade] = tempo_espera_processo >= 0 ? tempo_espera_processo : 0;
+            }
+
+            // Incrementa o tempo atual para a próxima iteração do loop
+            tempoAtual++;
         }
 
-        imprime_stats(tempo_espera);
+        System.out.println("--------------------------------");
 
+        // Imprime os tempos de espera calculados para cada processo
+        imprime_stats(tempo_espera);
     }
+
     
     public static void Round_Robin(int[] execucao, int[] espera, int[] restante){
         int[] tempo_execucao = execucao.clone();
