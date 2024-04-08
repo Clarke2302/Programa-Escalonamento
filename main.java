@@ -175,7 +175,7 @@ public class main{
     
         int tempoAtual = 1;  // Tempo atual de execução
         int processosCompletos = 0; // Contador de processos concluídos
-
+    
         System.out.println("--------------------------------");
     
         while (processosCompletos < numProcessos) {
@@ -196,12 +196,21 @@ public class main{
             }
     
             if (preemptivo) {
+                int menor_tempo_restante = Integer.MAX_VALUE;
+                int processo_interrompido = -1;
+    
                 // Verifica se há um processo com tempo restante menor que o processo atual em execução
                 for (int i = 0; i < numProcessos; i++) {
-                    if (i != processo_menor_tempo && tempo_chegada[i] <= tempoAtual && tempo_restante[i] < tempo_restante[processo_menor_tempo] && tempo_restante[i] > 0) {
-                        System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_menor_tempo + "] interrompido");
-                        processo_menor_tempo = i;
+                    if (i != processo_menor_tempo && tempo_chegada[i] <= tempoAtual && tempo_restante[i] < menor_tempo_restante && tempo_restante[i] > 0) {
+                        menor_tempo_restante = tempo_restante[i];
+                        processo_interrompido = i;
                     }
+                }
+    
+                // Se encontrou um processo com tempo restante menor, interrompe o processo atual
+                if (processo_interrompido != -1) {
+                    System.out.println("\n"+"tempo[" + tempoAtual + "]: processo[" + processo_menor_tempo + "] interrompido");
+                    processo_menor_tempo = processo_interrompido;
                 }
             }
     
@@ -221,7 +230,7 @@ public class main{
         }
         System.out.println("--------------------------------");
         imprime_stats(tempo_espera);
-    }
+    }    
 
     //------------------PRIORIDADE--------------------
 
