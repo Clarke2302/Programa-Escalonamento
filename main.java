@@ -65,7 +65,7 @@ public class main{
                     imprime_processos(tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
                 }
                 if(escolha==9){
-                    System.out.println("\n"+"Você está saindo do programa...."+"\n"+"Volte Sempre :)");
+                    System.out.println("\n"+"Você está saindo do programa...."+"\n"+"Volte Sempre :)"+"\n");
                     break;
                 }
                 if(escolha>9 || escolha<1){
@@ -109,7 +109,7 @@ public class main{
         System.out.println("--------------------------------");
         //Imprime lista de processos
     for (int i = 0; i < n_processos; i++) {
-        System.out.println("Processo["+i+"]: tempo_execucao="+ tempo_execucao[i] + " tempo_restante="+tempo_restante[i] + " tempo_chegada=" + tempo_chegada[i] + " prioridade =" +prioridade[i]);
+        System.out.println("Processo["+i+"]: tempo_execucao = "+ tempo_execucao[i] + " tempo_restante = "+tempo_restante[i] + " tempo_chegada = " + tempo_chegada[i] + " prioridade = " +prioridade[i]);
     }
     System.out.println("--------------------------------");
     }
@@ -121,7 +121,7 @@ public class main{
         double tempo_espera_total = 0;
         
         for(int i=0; i<n_processos; i++){ 
-            System.out.println("Processo["+i+"]: tempo_espera="+tempo_espera[i]);
+            System.out.println("Processo["+i+"]: tempo_espera = "+tempo_espera[i]);
             tempo_espera_total = tempo_espera_total + tempo_espera[i];
         }
 
@@ -235,11 +235,14 @@ public class main{
         int tempoAtual=1;
 
         while (processosCompletos < n_processos) {
+            int maior_prioridade = Integer.MAX_VALUE;
+            int processo_maior_prioridade = -1;
 
             for (int i = 0; i < n_processos; i++) {
 
-                if(prioridade_temp[i]>tempoAtual){
-
+                if (tempo_chegada[i] <= tempoAtual && prioridade_temp[i] < maior_prioridade && tempo_restante[i] > 0) {
+                maior_prioridade = prioridade_temp[i];
+                processo_maior_prioridade = i;
                 }
             }
         }
