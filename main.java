@@ -225,14 +225,31 @@ public class main {
         int[] tempo_espera = espera.clone();
         int[] tempo_restante = restante.clone();
         int[] tempo_chegada = chegada.clone();
-        int[] prioridade_temp = prioridade.clone();
+        int[] prioridade_ = prioridade.clone();
 
         int maiorPrioridade = 0; //esse programa utiliza da maior prioridade para ser o primeiro processo a ser feito
         int processoExecucao = -1;
         int processosConcluidos = 0;
         int tempo = 0;
 
+        while(true) { 
+            tempo++;
 
+            //PREEMPTIVO
+            if (preemptivo || processoExecucao == -1) {
+                for (int i=0; i<numProcessos; i++) {
+                    if ((tempo_restante[i] != 0) && (tempo_chegada[i] <= tempo)) {
+                        if (prioridade_[i] > maiorPrioridade) {
+                            maiorPrioridade = prioridade_[i];
+                            processoExecucao = i;
+                        }
+                    }
+                }
+            }
+
+
+
+        }
     }
 
 
