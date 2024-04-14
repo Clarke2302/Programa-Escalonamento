@@ -55,7 +55,7 @@ public class main {
                 PRIORIDADE(false, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
             }
             if (escolha == 6) {
-                //Round_Robin(tempo_execucao, tempo_espera, tempo_restante);
+                Round_Robin(tempo_execucao, tempo_espera, tempo_restante);
             }
             if (escolha == 7) {
                 imprime_processos(tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
@@ -274,14 +274,15 @@ public class main {
         imprime_stats(tempo_espera);
     }
 
+//---------------------ROUND-ROBIN--------------------
 
         public static void Round_Robin ( int[] execucao, int[] espera, int[] restante){
             int[] tempo_execucao = execucao.clone();
             int[] tempo_espera = espera.clone();
             int[] tempo_restante = restante.clone();
 
-            // Definindo o quantum para o algoritmo Round-Robin
-            int quantum = 2; // Pode ser ajustado conforme necessário
+            // Definindo o quantum = intervalo de tempo fixo 
+            int quantum = 2; 
 
             // Inicialização de variáveis de controle
 
