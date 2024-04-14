@@ -227,6 +227,12 @@ public class main {
         int[] tempo_chegada = chegada.clone();
         int[] prioridade_temp = prioridade.clone();
 
+        int maiorPrioridade = 0; //esse programa utiliza da maior prioridade para ser o primeiro processo a ser feito
+        int processoExecucao = -1;
+        int processosConcluidos = 0;
+        int tempo = 0;
+
+
     }
 
 
