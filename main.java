@@ -49,10 +49,10 @@ public class main {
                 SJF(false, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada);
             }
             if (escolha == 4) {
-                //PRIORIDADE(true, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
+                PRIORIDADE(true, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
             }
             if (escolha == 5) {
-                //PRIORIDADE(false, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
+                PRIORIDADE(false, tempo_execucao, tempo_espera, tempo_restante, tempo_chegada, prioridade);
             }
             if (escolha == 6) {
                 //Round_Robin(tempo_execucao, tempo_espera, tempo_restante);
@@ -236,6 +236,7 @@ public class main {
             tempo++;
 
             //PREEMPTIVO
+            // Escalonamento preemptivo: seleciona o processo com maior prioridade que chegou até o momento
             if (preemptivo || processoExecucao == -1) {
                 for (int i=0; i<numProcessos; i++) {
                     if ((tempo_restante[i] != 0) && (tempo_chegada[i] <= tempo)) {
@@ -246,10 +247,31 @@ public class main {
                     }
                 }
             }
+            // Verifica se nenhum processo está pronto para execução
+            if (processoExecucao == -1)
+            System.out.println("tempo["+tempo+"]: nenhum processo está pronto");
 
+            else {
+                // Atualiza o tempo de espera do processo que acabou de chegar à CPU
+                if (tempo_restante[processoExecucao] == tempo_execucao[processoExecucao])
+                    tempo_espera[processoExecucao] = tempo - tempo_chegada[processoExecucao];
 
+                // Executa o processo por 1 unidade de tempo
+                tempo_restante[processoExecucao]--;
+                System.out.println("tempo[" + tempo + "]: processo[" + processoExecucao + "] restante = " + tempo_restante[processoExecucao]);
 
+                // Verifica se o processo foi concluído
+                if (tempo_restante[processoExecucao] == 0) {
+                    processoExecucao = -1;
+                    maiorPrioridade = 0;
+                    processosConcluidos++;
+
+                    if (processosConcluidos == numProcessos)
+                        break;
+                }
+            }
         }
+        imprime_stats(tempo_espera);
     }
 
 
